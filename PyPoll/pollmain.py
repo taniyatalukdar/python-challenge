@@ -1,4 +1,3 @@
-#from multiprocessing.sharedctypes import Value
 import os
 import csv
 #from collections import defaultdict
@@ -12,7 +11,6 @@ percentageOfVotes = []
 votesByCandidate = {}
 votesToWin = 0
 
-
 # open and read csv file
 with open(poll_csv) as election_data:
     csvreader = csv.reader(election_data)
@@ -20,48 +18,44 @@ with open(poll_csv) as election_data:
     #skip first row
     csv_header = next(csvreader)
      
-     #loop through
+     #loop through the file
     for row in csvreader:
      candidate = row[2]   
-     
+     #If candidtae is already on our list, we will simply add a vote in his/her name 
      if candidate in votesByCandidate:
-       votesByCandidate.append(candidate)
-       votesByCandidate[candidate] = 0
        votesByCandidate[candidate]+=1
+     else:  
+       votesByCandidate[candidate] = 1
+       
+       #determine the winner by using max function to the dictionary
      winner = max(votesByCandidate, key=votesByCandidate.get)
-     maxVotesCount = votesByCandidate[winner]              
+     maxVotesCount = votesByCandidate[winner]   
+     #get total number of votes by using the sum function        
      rowOfVotes = sum(votesByCandidate.values())
      
-     #for x in  candidate:
-     #completeListCandidates.add(row[2])
- 
-     
-    # Add to percent_votes list 
-     
-
-    for k,v in votesByCandidate.items():
-      #percentageOfVotes.append((f"{v/rowOfVotes}"%))
-       percentage = round((v/rowOfVotes)*100,3)
-       votesByCandidate[k] = f"{percentage}%"
-
+#Exporting to .txt file
 output_file = 'Resources/election_results.txt'
 with open(output_file, "w", newline="") as datafile:    
     
-
+  # Displaying results
     print("Election Results")
     print("-------------------------")
     print(f"Total Votes: {rowOfVotes}")
-    #print(f"{votesByCandidate} {percentageOfVotes:.3f}%")
-    print(f"{votesByCandidate}")
-    #print(f"{percentageOfVotes}")
     print("-------------------------")
-
+    #looping through the votes to get the number of votes attributing to each candidate and converting to percentage
+    for k,v in votesByCandidate.items():
+        percentage = round((v/rowOfVotes)*100,3)
+        print(f"{k}: {percentage} % ({v})\n")
+    print("-------------------------")
+    print(f"Winner: {winner}")
+  #writing to the .txt file
     datafile.write(f"Election Results\n")
     datafile.write(f"--------------------\n")
     datafile.write(f"Total Votes: {rowOfVotes}\n")
     datafile.write(f"--------------------\n")
-#for i in range(len(completeListCandidates)):
-   # print(f"{completeListCandidates[i]: {str(percentageOfVotes[1])} ({str(num_votes[i])})}")
-print(f"Winner: {winner}")
-
+    for k,v in votesByCandidate.items():
+        percentage = round((v/rowOfVotes)*100,3)
+        datafile.write(f"{k}: {percentage} % ({v})\n")
+    datafile.write("-------------------------\n")
+    datafile.write(f"Winner: {winner}")
 
