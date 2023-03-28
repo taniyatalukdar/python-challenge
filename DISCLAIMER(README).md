@@ -1,0 +1,1 @@
+It takes a village to code a python assignment quite literally :). In my process, I took help from many sources that include the internet, particularly github. I also worked closely with Veronica Mueller and Saroja Shrestha. In addition, I also took help from my friends who are coders themselves.
